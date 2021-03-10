@@ -2,29 +2,36 @@ import {pokedex} from '../src/data.js';
 
 //para filter bycondition 1
 describe('filter By Type test', () => {
+
+  const data = [{
+    name: 'pokemon1',
+    type: 'fire',
+  },
+  {
+    name: 'pokemon2',
+    type: 'grass',
+  }
+  ]
+
   it('is a function', () => {
     expect(typeof pokedex.filterByType).toBe('function');
   });
 
   it('return result to filter By Type', () => {
-    const data = [{
-      name: 'pokemon1',
-      type: 'fire',
-    },
-    {
-      name: 'pokemon2',
-      type: 'grass',
-    }
-    ]
+    
     const type = 'fire';
     const result = [{
       name: 'pokemon1',
       type: 'fire',
     }]
+    expect(pokedex.filterByType(data, type)).toEqual(result);
 
+  });
+
+  it('return result all to filter By Type', () => {
     
-
-
+    const type = '';
+    const result = data
     expect(pokedex.filterByType(data, type)).toEqual(result);
 
   });
@@ -34,24 +41,52 @@ describe('filter By Type test', () => {
 
 //para order de la A - Z
 describe('orderByName test', () => {
+
+  const data = [{
+    name: 'A',
+    num: '002'
+  },
+  {
+    name: 'Z',
+    num: '001'
+  }]
   it('is a function', () => {
     expect(typeof pokedex.orderByName).toBe('function');
   });
 
   it('orderByName A to Z', () => {
-    const data = [{
-      name: 'A',
-    },
-    {
-      name: 'Z'
-    }]
-
     const nameA = 'A-Z';
     const result = [{
       name: 'A',
+      num: '002'
     },
     {
       name: 'Z',
+      num: '001'
+    }]
+    expect(pokedex.orderByName(data, nameA)).toEqual(result);
+  });
+
+  it('orderByName Z to A', () => {
+    const nameA = 'Z-A';
+    const result = [    {
+      name: 'Z',
+      num: '001'
+    },{
+      name: 'A',
+      num: '002'
+    }]
+    expect(pokedex.orderByName(data, nameA)).toEqual(result);
+  });
+
+  it('orderByName Original', () => {
+    const nameA = 'Order';
+    const result = [    {
+      name: 'Z',
+      num: '001'
+    },{
+      name: 'A',
+      num: '002'
     }]
     expect(pokedex.orderByName(data, nameA)).toEqual(result);
   });
