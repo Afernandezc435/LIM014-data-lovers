@@ -1,11 +1,12 @@
 import data from './data/pokemon/pokemon.js';
 import {pokedex} from './data.js';
 
+
 const backColor = {
-  water: '#6890F0',
-  fire: '#F08030',
-  grass: '#61ECB3',
-  poison:'#A040A0',
+water: '#6890F0',
+fire: '#F08030',
+grass: '#78C850',
+poison:'#A040A0',
 bug:'#729f3f',
 normal:'#a4acaf',
 flying:'#A890F0',
@@ -24,7 +25,9 @@ fairy:'#B8B8D0',
 }
 const containerList = document.getElementById("list")
 const pokemonModal = document.getElementById('miModal');
+
 let body = document.getElementsByTagName("body")[0];
+
 const showData = function (pokemonArray) {
   containerList.innerHTML = ""
 
@@ -35,12 +38,11 @@ const showData = function (pokemonArray) {
     item.id = pokemon.num
     containerList.appendChild(item).innerHTML = `
          <span class="number-prefix ${pokemon.type[0]}">${pokemon.num}</span>
-         <section>
+         <section class="imgCard">
            <figure id="pokemon-${pokemon.num}" class="card">
-             <p class="info">${pokemon.name}</p>
+             <p class="name">${pokemon.name}</p>
              <img src="${pokemon.img}" class="imgPokemon">
            </figure>
-
          </section>
          <div class="type">${pokemon.type.map(type => '<span class="' + type + '">'+ type +'</span>').join('')}</div>
     `
@@ -54,7 +56,7 @@ const showData = function (pokemonArray) {
       if (pokemon.evolution['prev-evolution']) {
         let evolutions = getPrevEvolution(pokemon.evolution['prev-evolution'])
 
-        evolutions.forEach(evol => {
+        evolutions.forEach(evol => {  //NO ES UN BUCLE, ES UN METODO q ejecuta la función
           prevEvolution += `<div class="evolution-each-container">
             <img class="evolution-img" src="https://www.serebii.net/pokemongo/pokemon/${evol.num}.png">
             <p class="evolution-p">${evol.name}</p><p class="evolution-p">N° ${evol.num}</p>
@@ -66,7 +68,8 @@ const showData = function (pokemonArray) {
         let evolutions = getNextEvolution(pokemon.evolution['next-evolution'])
 
         evolutions.forEach(evol => {
-          nextEvolution += `<div class="evolution-each-container">
+          nextEvolution += `
+          <div class="evolution-each-container">
             <img class="evolution-img" src="https://www.serebii.net/pokemongo/pokemon/${evol.num}.png">
             <p class="evolution-p">${evol.name}</p><p class="evolution-p">N° ${evol.num}</p>
           </div>`
@@ -75,90 +78,85 @@ const showData = function (pokemonArray) {
 
       let template = `
       <div class="modal-content">
-        <span id="spanClose" class="close">x</span>
-       
-          <div class="modal_block1">
-            <img class="modal_block1 - img" src="${pokemon.img}">
-            <p class="modal_block1-txt"> N° ${pokemon.num}</p>
-            <p class="txt-modal-title">${pokemon.name}</p>
-            <p class="version-description"> ${pokemon.about}</p>
-          </div>
+      <span id="spanClose" class="close">x</span>
+      
+      <div class="rows">      
+        <div class="modal_block1">
+          <h1 class="txt-modal-title"><strong>${pokemon.name}</strong></h1>
+          <img class="modal_block1 - img" src="${pokemon.img}">
+          <p class="modal_block1-txt"> N° ${pokemon.num}</p>
+          <p class="version-description">About: ${pokemon.about}</p>           
+        </div>
+        
+        <section class="row-2">
+          <section class="rows" id="rows">
+            <p>Height:${pokemon.size.height}</p>
+            <p>Weight: ${pokemon.size.weight} </p>
+            <article class="sub-title">
+              <article class="titleAttack" ><strong>QUIK MOVE: </strong></article>
+                 ${pokemon['quick-move'].map(move => '<span class="typeAttack '+move.type+'"> '+move.name+' </span>').join('')}
+            </article>
+            <article class="sub-title">
+              <article class="titleAttack" ><strong>SPECIAL ATTACK:</strong> </article>
+                ${pokemon['special-attack'].map(attack => '<span class="typeAttack '+attack.type+'"> '+attack.name+' </span>').join('')}
+            </article>
+          </section>
+    
           <section class="rows">
           
-            <div class="modal_block4">
+            <section class="modal_block4">
+                <div class="resist-weak-ctn">
+                  <h3 class="modal-h4"> TYPE</h3>
+                  <div class="typeModal">
+                    ${pokemon.type.map(type => '<img class="typeGeneral" src="./images/'+ type +'.png">').join('')}
+                  </div>
+              </div>
               <div class="resist-weak-ctn">
-                <h4 class="modal-h4"> TYPE</h4>
+                <h3 class="modal-h4">RESISTANCE</h3>
                 <div>
-                  ${pokemon.type.map(type => '<img class="typeGeneral" src="./images/'+ type +'.png">').join('')}
+                  ${pokemon.resistant.map(type => '<img class="typeGeneral" src="./images/'+ type +'.png">').join('')}
+              </div>
+              </div>
+            <div class="resist-weak-ctn">
+                <h3 class="modal-h4"> WEAKNESSES</h3>
+                <div>
+                ${pokemon.weaknesses.map(type => '<img class="typeGeneral" src="./images/'+ type +'.png">').join('')}
                 </div>
               </div>
-              </div>
-              <div class="modal_block4">
-              <div class="resist-weak-ctn">
-                <h4 class="modal-h4">RESISTANCE</h4>
-                <div>
-                  ${pokemon.resistant.map(type => '<img class="resist-weak-img" src="./images/'+ type +'.png">').join('')}
-                </div>
-              </div>
-              <div class="resist-weak-ctn">
-         <h4 class="modal-h4"> WEAKNESSES</h4>
-              <div>
-              ${pokemon.weaknesses.map(type => '<img class="resist-weak-img" src="./images/'+ type +'.png">').join('')}
-</div>
-</div>
-</div>
-<section class="firstRow">
-            <section class="heighWeight">
-              <p> Height:${pokemon.size.height}</p>
-              <p> Weight${pokemon.size.weight} </p>
             </section>
-            
-          </section>
-        
-              
-          <section class="secondRow">
-              <section class="sub-title">
-                <section class="titleAttack" colspan="3."> Quick Move: </section>
-                ${pokemon['quick-move'].map(move => '<span class="typeAttack '+move.type+'"> '+move.name+' </span>').join('')}
-              </section>
-              <section class="sub-title">
-                <section class="titleAttack" colspan="4.">Special Attack: </section>
-                ${pokemon['special-attack'].map(attack => '<span class="typeAttack '+attack.type+'"> '+attack.name+' </span>').join('')}
-              </section>
-          </section>
-</section>
-          
+    
+            <section class="modal_block4" id="column-M">
 
-      <section class="rows">
-          
-      </section>
-
-          
-          
-          <div class="evolandstas" id="column-M">
-            <section class="row3" id="chartjs-radar" style="width: 400px; padding-left: 0; padding-right: 0; margin-left: auto; margin-right: auto;"><canvas id="canvas"></canvas></section>
             <section class="evoluciones">
+            <h3 class="modal-h3">EVOLUTION</h3>
               <div class="container-movements">
-                <h3 class="modal-h3">EVOLUTION</h3>
+                
                 ${(prevEvolution)?prevEvolution:''}
                 ${(nextEvolution)?nextEvolution:''}
               </div>
             </section>
             <section class="column">
-              <h2 class="subtitle"> Stats </h2>
-              <p> Max-Hp <br>${pokemon.stats['max-hp']} </p>
-              <p> Max-cp <br>${pokemon.stats['max-cp']}</p>
-              <p> Base-attack <br>${pokemon.stats['base-attack']}</p>
-              <p> Base-defense <br>${pokemon.stats['base-defense']}</p>
-              <p> Base-stamina <br>${pokemon.stats['base-stamina']}</p>
-              <p> <strong>Avg Stats </strong> <br>${pokedex.calculateStats(pokemon)}</p>
+              <h3 class="subtitle"> STATS </h3>
+              <p> Max-Hp: ${pokemon.stats['max-hp']} </p>
+              <p> Max-cp: ${pokemon.stats['max-cp']}</p>
+              <p> Base-attack: ${pokemon.stats['base-attack']}</p>
+              <p> Base-defense: ${pokemon.stats['base-defense']}</p>
+              <p> Base-stamina: ${pokemon.stats['base-stamina']}</p>
+              <p> <strong>Avg Stats </strong>: ${pokedex.calculateStats(pokemon)}</p>
             </section>
-          </div>
-      </div>
-      `
+            
+            </section>
+          </section>
+        </section>
+    </div>
+    <div class="rows" id="chartjs-radar">
+          
+    </div>
+    <section class="row3" id="chartjs-radar" style="width: 400px; padding-left: 0; padding-right: 0; margin-left: auto; margin-right: auto;"><canvas id="canvas"></canvas></section>
+    </div> `
 
       let colorType = backColor[pokemon.type[0]];
-      let color = Chart.helpers.color;
+      let color =Chart.helpers.color;
       let config = {
         type: 'radar',
         data: {
@@ -200,6 +198,7 @@ const showData = function (pokemonArray) {
       body.style.position = "static";
       body.style.height = "100%";
       body.style.overflow = "hidden";
+
       
       span.onclick = function() {
 				pokemonModal.style.display = "none";
@@ -232,8 +231,8 @@ order.addEventListener('change', () => {
 const searchBy = document.getElementById('inputSearch');
 searchBy.addEventListener('keyup', () => {
   const pokemonName = searchBy.value;
-  showData(pokedex.filterByName(data.pokemon, pokemonName))
-  
+    showData(pokedex.filterByName(data.pokemon, pokemonName))
+ 
 });
 
 
@@ -260,4 +259,3 @@ function getPrevEvolution(pokemon) {
   evolutions.push(pokemon[0]);
   return evolutions;
 }
-
