@@ -6,6 +6,9 @@
     "ecmaVersion": 2018,
     "sourceType": "module"
   },
+    "globals": {
+      "Chart": "readonly" 
+    },
   "extends": "eslint:recommended",
   "globals": {
     "Chart": "readonly" 
@@ -14,4 +17,5 @@
     "no-console": "warn",
     "import/extensions": 0
   }
+  
 }
