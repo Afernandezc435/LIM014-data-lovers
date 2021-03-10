@@ -24,7 +24,7 @@ fairy:'#B8B8D0',
 }
 const containerList = document.getElementById("list")
 const pokemonModal = document.getElementById('miModal');
-var body = document.getElementsByTagName("body")[0];
+let body = document.getElementsByTagName("body")[0];
 const showData = function (pokemonArray) {
   containerList.innerHTML = ""
 
